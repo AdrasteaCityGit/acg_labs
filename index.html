@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore ACG Labs, a pioneering research institution committed to advancing scientific discovery and technological innovation. Our interdisciplinary approach and cutting-edge research contribute to global advancements.">
+    <meta name="keywords" content="ACG Labs, scientific research, technological innovation, advanced research studies, data analytics, nanotechnology, artificial intelligence, biotechnology, material science">
+    <link rel="canonical" href="your-canonical-url">
+    <meta name="robots" content="index, follow">
+
+    <!-- Structured Data for Breadcrumbs -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "your-website-url#home"
+            }, {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About Us",
+                "item": "your-website-url#about"
+            }, {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Services",
+                "item": "your-website-url#services"
+            }, {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Innovation",
+                "item": "your-website-url#innovation"
+            }, {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "Research Areas",
+                "item": "your-website-url#research"
+            }, {
+                "@type": "ListItem",
+                "position": 6,
+                "name": "Our Team",
+                "item": "your-website-url#team"
+            }, {
+                "@type": "ListItem",
+                "position": 7,
+                "name": "Partnership",
+                "item": "your-website-url#partnership"
+            }, {
+                "@type": "ListItem",
+                "position": 8,
+                "name": "Contact",
+                "item": "your-website-url#contact"
+            }]
+        }
+    </script>
+
+    <!-- Structured Data for Organization -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "ACG Labs",
+            "url": "your-website-url",
+            "logo": "your-logo-url",
+            "description": "Advancing Scientific and Technological Research",
+            "sameAs": [
+                "your-social-media-profile-1",
+                "your-social-media-profile-2"
+            ],
+            "contactPoint": [{
+                "@type": "ContactPoint",
+                "telephone": "+1-555-555-5555",
+                "contactType": "customer service"
+            }],
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Your Street Address",
+                "addressLocality": "Your City",
+                "postalCode": "Your Postal Code",
+                "addressCountry": "Your Country"
+            }
+        }
+    </script>
+
+    <!-- Your existing stylesheets and scripts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto:wght@400;700&display=swap">
+    <style>
+        /* Reset and General Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            font-size: 16px;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #262626;
+            color: #00ffcc;
+            padding: 50px 0;
+            text-align: center;
+            position: relative;
+            background-image: url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #cccccc;
+        }
+
+        /* Navigation Styles */
+        nav {
+            background-color: #262626;
+            color: #00ffcc;
+            padding: 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav a {
+            color: #00ffcc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1.2em;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #ffffff;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        section p {
+            margin-bottom: 20px;
+            color: #cccccc;
+        }
+
+        /* Container Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Flex Container Styles */
+        .flex-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: #262626;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            object-fit: cover;
+            height: 150px; /* Adjust the height as needed */
+        }
+
+        /* Call to Action Styles */
+        .call-to-action,
+        .innovation,
+        .partnership,
+        .testimonial {
+            background-color: #262626;
+            color: #00ffcc;
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+
+        .call-to-action button,
+        .partnership button {
+            background-color: #00ffcc;
+            color: #262626;
+            padding: 15px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .call-to-action button:hover,
+        .partnership button:hover {
+            background-color: #008c66;
+            color: #262626;
+        }
+
+        /* Partnership Styles */
+        .partnership ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .partnership li {
+            margin-bottom: 10px;
+            color: #cccccc;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #262626;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animated {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        /* Responsive Styles */
+        @media only screen and (max-width: 1200px) {
+            .container {
+                padding: 0 20px;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            header {
+                padding: 30px 0;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            nav {
+                padding: 5px;
+            }
+
+            nav a {
+                font-size: 1em;
+            }
+
+            section {
+                padding: 20px 10px;
+            }
+
+            .card {
+                margin: 10px;
+            }
+
+            .call-to-action button,
+            .partnership button {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+
+            footer {
+                padding: 10px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1 class="animated">ACG Labs</h1>
+        <p class="animated">Advancing Scientific and Technological Research</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a> |
+        <a href="#about">About Us</a> |
+        <a href="#services">Services</a> |
+        <a href="#innovation">Innovation</a> |
+        <a href="#research">Research Areas</a> |
+        <a href="#team">Our Team</a> |
+        <a href="#partnership">Partnership</a> |
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <section id="home" class="intro">
+        <div class="container">
+            <h2 class="animated">Welcome to ACG Labs</h2>
+            <p class="animated">At ACG Labs, we are on a mission to explore the frontiers of scientific and technological knowledge. Our commitment to <span style="color: #00ffcc; font-weight: bold;">innovation</span> drives us to make groundbreaking discoveries that shape the future.</p>
+        </div>
+    </section>
+
+    <section id="about">
+        <div class="container">
+            <h2 class="animated">About ACG Labs</h2>
+            <p class="animated">ACG Labs is a pioneering research institution dedicated to advancing scientific discovery and technological innovation. Since our establishment, we have been at the forefront of <span style="color: #00ffcc; font-weight: bold;">cutting-edge research</span>, collaborating across disciplines to address complex challenges.</p>
+            <p class="animated">Our team of experts is driven by a passion for pushing the boundaries of knowledge and contributing to the global scientific community.</p>
+        </div>
+    </section>
+
+    <section id="services">
+        <div class="container">
+            <h2 class="animated">Our Services</h2>
+            <p class="animated">Explore our diverse range of research services designed to meet the demands of a rapidly evolving scientific landscape. At ACG Labs, we are committed to providing innovative solutions that drive progress and make a lasting impact.</p>
+            <div class="flex-container">
+                <div class="card">
+                    <img src="image/service1.jpg" alt="Service 1">
+                    <h3>Advanced Research Studies</h3>
+                    <p>Embark on a journey of exploration with our advanced research studies. Our interdisciplinary approach enables us to delve into complex topics, pushing the boundaries of scientific knowledge.</p>
+                </div>
+                <div class="card">
+                    <img src="image/service2.jpg" alt="Service 2">
+                    <h3>Technological Innovation</h3>
+                    <p>Stay at the forefront of technological advancements with our innovation services. We harness cutting-edge technologies to drive positive change and develop solutions that shape the future.</p>
+                </div>
+                <div class="card">
+                    <img src="image/service3.jpg" alt="Service 3">
+                    <h3>Data Analytics and Insights</h3>
+                    <p>Unlock the power of data with our analytics services. Our experts analyze complex datasets to provide valuable insights, empowering informed decision-making and strategic planning.</p>
+                </div>
+                <div class="card">
+                    <img src="image/service4.jpg" alt="Service 4">
+                    <h3>Collaborative Research Partnerships</h3>
+                    <p>Forge impactful collaborations with our research partnership services. We believe in the strength of collaboration and work closely with industry and academia to accelerate discoveries.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="innovation" class="innovation">
+        <div class="container">
+            <h2 class="animated">Driving Innovation</h2>
+            <p class="animated">At ACG Labs, innovation is at the core of everything we do. We leverage advanced technologies and methodologies to unlock new possibilities and drive <span style="color: #00ffcc; font-weight: bold;">positive change</span> in the world.</p>
+        </div>
+    </section>
+
+    <section id="research">
+        <div class="container">
+            <h2 class="animated">Research Areas</h2>
+            <p class="animated">At ACG Labs, our research spans diverse domains, each contributing to advancements in science and technology. Explore our key research areas:</p>
+
+            <div class="flex-container">
+                <div class="card">
+                    <img src="image/nanotechnology.jpg" alt="Nanotechnology">
+                    <h3>Nanotechnology</h3>
+                    <p>Exploring the potential of materials at the nanoscale to develop innovative solutions in medicine, electronics, and materials science.</p>
+                </div>
+
+                <div class="card">
+                    <img src="image/ai.jpg" alt="Artificial Intelligence">
+                    <h3>Artificial Intelligence</h3>
+                    <p>Harnessing the power of AI to solve complex problems, optimize processes, and drive innovation across various industries.</p>
+                </div>
+
+                <div class="card">
+                    <img src="image/biotechnology.jpg" alt="Biotechnology">
+                    <h3>Biotechnology</h3>
+                    <p>Applying biological systems and processes to develop cutting-edge solutions in healthcare, agriculture, and environmental sustainability.</p>
+                </div>
+
+                <div class="card">
+                    <img src="image/material-science.jpg" alt="Material Science">
+                    <h3>Material Science</h3>
+                    <p>Investigating novel materials and their applications, pushing the boundaries of what is possible in electronics, manufacturing, and more.</p>
+                </div>
+
+                <!-- Add more research areas as needed -->
+            </div>
+        </div>
+    </section>
+
+    <section id="team">
+        <div class="container">
+            <h2 class="animated">Meet Our Team</h2>
+            <p class="animated">Our team is composed of dedicated professionals and experts in their respective fields. Together, we work collaboratively to drive scientific advancements and technological breakthroughs.</p>
+            <div class="flex-container">
+                <!-- Team Cards as before -->
+            </div>
+        </div>
+    </section>
+
+    <section id="partnership" class="partnership">
+        <div class="container">
+            <h2 class="animated">Building Partnerships</h2>
+            <p class="animated">We believe in the power of collaboration. By fostering strong partnerships with leading organizations, we amplify our impact and accelerate the pace of discovery.</p>
+            <ul class="animated">
+                <li>Strategic Alliances</li>
+                <li>Research Collaborations</li>
+                <li>Industry Partnerships</li>
+                <li>Academic Collaborations</li>
+            </ul>
+            <button onclick="reloadPage()" class="animated">Get in Touch</button>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="animated">Contact ACG Labs</h2>
+            <p class="animated">Interested in collaborating or have inquiries? Reach out to us!</p>
+            <p class="animated">Email: physics@adrasteagit.com</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p class="animated">&copy; 2024 ACG Labs. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function reloadPage() {
+            location.reload();
+        }
+
+        // Fade in animation
+        document.addEventListener('DOMContentLoaded', function () {
+            const animatedElements = document.querySelectorAll('.animated');
+            animatedElements.forEach(element => {
+                element.style.opacity = 1;
+            });
+        });
+    </script>
+</body>
+
+</html>
