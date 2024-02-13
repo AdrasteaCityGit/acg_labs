@@ -15,54 +15,46 @@
             "@context": "https://schema.org",
             "@type": "BreadcrumbList",
             "itemListElement": [{
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "Home",
-                    "item": "adrasteagit.com#home"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "About Us",
-                    "item": "adrasteagit.com#about"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": "Services",
-                    "item": "adrasteagit.com#services"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 4,
-                    "name": "Innovation",
-                    "item": "adrasteagit.com#innovation"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 5,
-                    "name": "Research Areas",
-                    "item": "adrasteagit.com#research"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 6,
-                    "name": "Our Team",
-                    "item": "adrasteagit.com#team"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 7,
-                    "name": "Partnership",
-                    "item": "adrasteagit.com#partnership"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 8,
-                    "name": "Contact",
-                    "item": "adrasteagit.com#contact"
-                }
-            ]
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "adrasteagit.com#home"
+            }, {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "About Us",
+                "item": "adrasteagit.com#about"
+            }, {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Services",
+                "item": "adrasteagit.com#services"
+            }, {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "Innovation",
+                "item": "adrasteagit.com#innovation"
+            }, {
+                "@type": "ListItem",
+                "position": 5,
+                "name": "Research Areas",
+                "item": "adrasteagit.com#research"
+            }, {
+                "@type": "ListItem",
+                "position": 6,
+                "name": "Our Team",
+                "item": "adrasteagit.com#team"
+            }, {
+                "@type": "ListItem",
+                "position": 7,
+                "name": "Partnership",
+                "item": "adrasteagit.com#partnership"
+            }, {
+                "@type": "ListItem",
+                "position": 8,
+                "name": "Contact",
+                "item": "adrasteagit.com#contact"
+            }]
         }
     </script>
 
@@ -117,9 +109,7 @@
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        h1,
-        h2,
-        h3 {
+        h1, h2, h3 {
             font-family: 'Orbitron', sans-serif;
             color: #00ffcc;
             margin-bottom: 10px;
@@ -206,8 +196,7 @@
             border-radius: 8px;
             margin-bottom: 15px;
             object-fit: cover;
-            height: 150px;
-            /* Adjust the height as needed */
+            height: 150px; /* Adjust the height as needed */
         }
 
         /* Call to Action Styles */
@@ -269,7 +258,6 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -288,25 +276,57 @@
             }
         }
 
-        @media only screen and (max-width: 768px) {
+        @media only screen and (max-width: 1024px) {
             header {
                 padding: 30px 0;
             }
 
             h1 {
+                font-size: 2.5em;
+            }
+
+            h2 {
+                font-size: 2em;
+            }
+
+            nav {
+                padding: 10px;
+            }
+
+            nav a {
+                font-size: 1.2em;
+            }
+
+            section {
+                padding: 30px 10px;
+            }
+
+            .card {
+                margin: 15px;
+            }
+
+            .call-to-action button,
+            .partnership button {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            h1 {
                 font-size: 2em;
             }
 
             h2 {
-                font-size: 1.5em;
+                font-size: 1.8em;
             }
 
             nav {
-                padding: 5px;
+                padding: 10px;
             }
 
             nav a {
-                font-size: 1em;
+                font-size: 1.1em;
             }
 
             section {
