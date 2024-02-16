@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspberry Pi Pico Tracker Tutorial</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: #ffffff;
+            background-color: #1a1a1a;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+        }
+
+        .logo {
+            width: 100px; /* Adjust the width as needed */
+            height: auto;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        h1, h2, h3 {
+            color: #00ffcc;
+        }
+
+        code {
+            background-color: #838383;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #1a1a1a;
+        }
+
+        pre {
+            background-color: #838383;
+            padding: 10px;
+            border: 1px solid #1a1a1a;
+            border-radius: 4px;
+            overflow-x: auto;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header with logo -->
+    <div class="header">
+        <img src="../image/" alt="Logo" class="logo">
+        <h1>Raspberry Pi Pico Tracker Device Tutorial</h1>
+    </div>
+
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <a href="#section1">Gather Components</a>
+        <a href="#section2">Set Up Raspberry Pi Pico</a>
+        <a href="#section3">Connect Hardware</a>
+        <a href="#section4">Write Firmware</a>
+        <a href="#section5">Implement Communication</a>
+        <a href="#section6">Create Server/Application</a>
+        <a href="#section7">Power Management</a>
+        <a href="#section8">Testing</a>
+        <a href="#section9">Security Measures</a>
+        <a href="#section10">Legal and Privacy Considerations</a>
+        <a href="#section11">Documentation</a>
+    </div>
+
+    <h2>1. Gather Components</h2>
+    <ul>
+        <li>Raspberry Pi Pico</li>
+        <li>GPS module (e.g., NEO-6M)</li>
+        <li>Communication module (e.g., LoRa, GSM, or WiFi)</li>
+        <li>Power supply (e.g., rechargeable battery)</li>
+        <li>Sensors (if needed)</li>
+    </ul>
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section2">2. Set Up Raspberry Pi Pico</h2>
+    <ol>
+        <li>Install the Thonny IDE for Python development.</li>
+        <li>Flash MicroPython firmware onto the Raspberry Pi Pico.</li>
+        <li>Write a simple "Hello World" script to test the setup.</li>
+    </ol>
+
+    <h2 id="section3">3. Connect Hardware</h2>
+    <ul>
+        <li>Wire the GPS module to the Raspberry Pi Pico using GPIO pins.</li>
+        <li>Connect the communication module and any other components based on their datasheets.</li>
+    </ul>
+
+    <!-- Repeat the above format for each step -->
+
+    <h2 id="section4">4. Write Firmware</h2>
+    <p>Develop the firmware to read GPS data and communication module data using <code>MicroPython</code> or <code>C/C++</code>.</p>
+    <pre>
+      <h2># settings.py</h2>
+      <code>
+        CONFIG = {
+            'uart_port': 1,
+            'uart_baudrate': 9600,
+            'uart_tx_pin': 17,
+            'uart_rx_pin': 16,
+            'sleep_interval': 10,       # Sleep interval in seconds
+            'max_gps_retries': 3,       # Maximum number of attempts to read GPS data
+            'deep_sleep_on_error': 60,  # Sleep duration on unexpected errors in seconds
+            'server_url': 'http://example.com/api',  # Replace with your server URL
+            'api_key': 'your_api_key'   # Replace with your server API key
+        }          
+      </code>
+      <h2># main.py</h2>
+      <code>
+        import machine
+        import time
+        import urequests  # MicroPython library for HTTP requests
+        import settings  # Import the configuration settings
+        
+        # Logging setup
+        def log(message):
+            """
+            Log messages with a timestamp.
+            """
+            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            print("[{}] {}".format(timestamp, message))
+        
+        # GPS module setup
+        uart = machine.UART(settings.CONFIG['uart_port'], baudrate=settings.CONFIG['uart_baudrate'],
+                            tx=settings.CONFIG['uart_tx_pin'], rx=settings.CONFIG['uart_rx_pin'])
+        
+        def read_gps_data():
+            """
+            Read and parse NMEA sentences from the GPS module.
+            """
+            retries = 0
+            while retries < settings.CONFIG['max_gps_retries']:
+                try:
+                    sentence = b''
+                    while True:
+                        if uart.any():
+                            char = uart.read(1)
+                            sentence += char
+                            if char == b'\n':
+                                return sentence.decode('utf-8').strip()
+                except Exception as e:
+                    retries += 1
+                    log("Error reading GPS data (Attempt {}/{}): {}".format(retries, settings.CONFIG['max_gps_retries'], str(e)))
+        
+            log("Max retries reached. Unable to read GPS data.")
+            return None
+        
+        def extract_gps_coordinates(gps_sentence):
+            """
+            Extract latitude and longitude from GPGGA and GPRMC NMEA sentences.
+            Modify this function based on your GPS module and sentence format.
+            """
+            try:
+                if 'GPGGA' in gps_sentence:
+                    data = gps_sentence.split(',')
+                    latitude = float(data[2]) / 100
+                    longitude = float(data[4]) / 100
+                    return latitude, longitude
+        
+                elif 'GPRMC' in gps_sentence:
+                    data = gps_sentence.split(',')
+                    latitude = float(data[3][:2]) + float(data[3][2:]) / 60
+                    longitude = float(data[5][:3]) + float(data[5][3:]) / 60
+                    return latitude, longitude
+        
+            except Exception as e:
+                log("Error extracting GPS coordinates: {}".format(str(e)))
+                return None
+        
+        def send_data_to_server(latitude, longitude):
+            """
+            Implement communication with your server to send GPS data.
+            Modify this function based on your communication module and server setup.
+            """
+            try:
+                headers = {'Content-Type': 'application/json', 'Authorization': 'Bearer {}'.format(settings.CONFIG['api_key'])}
+                payload = {'latitude': latitude, 'longitude': longitude}
+                response = urequests.post(settings.CONFIG['server_url'], json=payload, headers=headers)
+        
+                if response.status_code == 200:
+                    log("Data sent to server successfully.")
+                else:
+                    log("Error sending data to server. HTTP Status Code: {}".format(response.status_code))
+        
+                response.close()
+        
+            except Exception as e:
+                log("Error sending data to server: {}".format(str(e)))
+        
+        def deep_sleep(seconds):
+            """
+            Enter deep sleep mode for the specified duration.
+            """
+            log("Entering deep sleep for {} seconds.".format(seconds))
+            machine.deepsleep(seconds * 1000)
+        
+        def main():
+            try:
+                while True:
+                    gps_data = read_gps_data()
+        
+                    if gps_data:
+                        coordinates = extract_gps_coordinates(gps_data)
+        
+                        if coordinates:
+                            latitude, longitude = coordinates
+                            log("Latitude: {}, Longitude: {}".format(latitude, longitude))
+        
+                            # Send data to server
+                            send_data_to_server(latitude, longitude)
+        
+                    # Sleep for a specified interval
+                    time.sleep(settings.CONFIG['sleep_interval'])
+        
+            except KeyboardInterrupt:
+                log("Program terminated by user.")
+            except Exception as e:
+                log("Unexpected error: {}".format(str(e)))
+                deep_sleep(settings.CONFIG['deep_sleep_on_error'])  # Sleep on unexpected errors
+        
+        if __name__ == "__main__":
+            main()          
+      </code>
+    </pre>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section5">5. Implement Communication</h2>
+    <p>Set up communication between the Raspberry Pi Pico and a central server using your chosen communication module.</p>
+    <p>Use appropriate protocols for data transmission (e.g., MQTT, HTTP).</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section6">6. Create Server/Application</h2>
+    <p>Develop a server or cloud-based application to receive and process data from the tracker.</p>
+    <p>Create a simple interface to display the tracker's location or other relevant information.</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section7">7. Power Management</h2>
+    <p>Implement power-saving features to extend battery life.</p>
+    <p>Consider using sleep modes when the tracker is inactive.</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section8">8. Testing</h2>
+    <p>Test your tracker device in different scenarios to ensure it meets your requirements.</p>
+    <p>Debug and optimize the code as needed.</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section9">9. Security Measures</h2>
+    <p>Implement security measures, such as data encryption, to protect transmitted information.</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section10">10. Legal and Privacy Considerations</h2>
+    <p>Ensure your tracker device complies with legal and privacy regulations in your region.</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+    <h2 id="section11">11. Documentation</h2>
+    <p>Document your project, including wiring diagrams, code documentation, and user instructions.</p>
+
+    <!-- Repeat for other steps -->
+
+    <!-- Add more sections following the same format -->
+
+</body>
+
+</html>
