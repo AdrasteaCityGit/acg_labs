@@ -1,5 +1,7 @@
-![alt text](https://www.adrasteagit.com/projects/acg_eugenia/acg_eugenia_logo.png)
+
 ACG_EUGENIA: Archive Metadata Extraction Tool
+
+![alt text](https://www.adrasteagit.com/projects/acg_eugenia/acg_eugenia_logo.png)
 
 Overview:
 ACG_EUGENIA is a comprehensive command-line utility designed for extracting metadata and content from a diverse range
