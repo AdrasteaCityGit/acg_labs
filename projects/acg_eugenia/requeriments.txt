@@ -1,10 +1,15 @@
-concurrent-futures==0.9.0
-eyed3==0.9.6
-moviepy==1.0.3
+# requirements.txt
+
+# Core libraries
 python-docx==0.8.11
-python-magic==0.4.24
+openpyxl==3.0.14
 python-pptx==0.6.19
-openpyxl==3.0.11
+
+# Additional libraries
+python-magic==0.4.22
+concurrent-futures==0.9.0
+eyed3==0.9.5
+moviepy==1.0.3
 pytesseract==0.3.8
 speechrecognition==3.8.1
 textblob==0.15.3
