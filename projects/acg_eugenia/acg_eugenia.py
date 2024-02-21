@@ -172,7 +172,7 @@ class ArchiveMetadataExtractor:
 
     def extract_text_metadata(self, file_name):
         try:
-            # Use subprocess to call pdftotext
+            # Using pdftotext command-line tool to extract text from PDF
             text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
             self.metadata['Text_Metadata'] = {
                 'content': text_content
@@ -217,6 +217,16 @@ class ArchiveMetadataExtractor:
             self.metadata['Audio_Content'] = {
                 'text_content': text_content
             }
+
+    def extract_text_content(self, file_name):
+        try:
+            # Using pdftotext command-line tool to extract text from PDF
+            text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
+            self.metadata['Text_Content'] = {
+                'text_content': text_content
+            }
+        except Exception as e:
+            print(f"Error extracting text content: {str(e)}")
 
     def perform_advanced_analysis(self, file_name, file_type):
         if file_type.lower() in ['pdf', 'image', 'audio', 'text']:
