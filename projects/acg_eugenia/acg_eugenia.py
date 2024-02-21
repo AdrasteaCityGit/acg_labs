@@ -12,14 +12,9 @@ import pytesseract
 from moviepy.editor import AudioFileClip
 import speech_recognition
 from textblob import TextBlob
-import python_pptx
-import openpyxl
-import python_docx
-import textract
-import nltk
-import platform
 from pydub import AudioSegment
 import subprocess
+import platform
 
 # Download nltk data for text analysis (you can further customize this based on your needs)
 nltk.download('punkt')
@@ -153,7 +148,7 @@ class ArchiveMetadataExtractor:
         }
 
     def extract_audio_metadata(self, file_name):
-        audio = AudioSegment.from_file(file_name)
+        audio = AudioSegment.from_file(file_name, format=file_extension[1:])  # Update this line
         self.metadata['Audio_Metadata'] = {
             'channels': audio.channels,
             'frame_rate': audio.frame_rate,
