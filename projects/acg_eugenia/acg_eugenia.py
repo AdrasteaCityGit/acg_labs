@@ -38,7 +38,7 @@ class ArchiveMetadataExtractor:
             '.zip': self.extract_zip_metadata,
             '.tar': self.extract_tar_metadata,
             '.rar': self.extract_rar_metadata,
-            '.pdf': self.extract_pdf_metadata,
+            '.pdf': self.extract_pdf_metadata(info.filename),
             '.jpg': self.extract_image_metadata,
             '.png': self.extract_image_metadata,
             '.jpeg': self.extract_image_metadata,
@@ -165,8 +165,8 @@ class ArchiveMetadataExtractor:
         elif file_type.lower() == 'text':
             self.extract_text_content(file_name)
 
-    def extract_pdf_metadata(self):
-    with open(self.file_path, 'rb') as pdf_file:
+    def extract_pdf_metadata(self, file_name):
+    with open(file_name, 'rb') as pdf_file:
         pdf_reader = PyPDF2.PdfReader(pdf_file)
         info = pdf_reader.getDocumentInfo()
         self.metadata['PDF_Metadata'] = {
@@ -178,6 +178,7 @@ class ArchiveMetadataExtractor:
             'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
             'number_of_pages': len(pdf_reader.pages)
         }
+
 
     def extract_image_text_content(self, file_name):
         img = Image.open(file_name)
