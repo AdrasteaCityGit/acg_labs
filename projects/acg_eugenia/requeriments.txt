@@ -1,9 +1,10 @@
-python-magic==0.4.24
-concurrent-futures==0.10.3
-eyed3==0.9.7
+concurrent-futures==0.9.0
+eyed3==0.9.6
 moviepy==1.0.3
-python-pptx==0.6.19
-openpyxl==3.0.14
 python-docx==0.8.11
-PyPDF2==1.26.0
-pillow==9.0.1
+python-magic==0.4.24
+python-pptx==0.6.19
+openpyxl==3.0.11
+pytesseract==0.3.8
+speechrecognition==3.8.1
+textblob==0.15.3
