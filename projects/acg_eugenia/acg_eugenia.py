@@ -165,6 +165,7 @@ class ArchiveMetadataExtractor:
         }
 
 
+
     def extract_image_text_content(self, file_name):
         img = Image.open(file_name)
         text_content = pytesseract.image_to_string(img)
