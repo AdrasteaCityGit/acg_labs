@@ -102,19 +102,20 @@ class ArchiveMetadataExtractor:
         with rarfile.RarFile(self.file_path, 'r') as rar_file:
             self._extract_metadata_from_archive(rar_file, selected_files, filter_types, extract_content, advanced_analysis)
 
-    def extract_pdf_metadata(self, file_name):
-        with open(file_name, 'rb') as pdf_file:
-            pdf_reader = PyPDF2.PdfReader(pdf_file)
-            info = pdf_reader.getDocumentInfo()
-            self.metadata['PDF_Metadata'] = {
-                'title': info.title,
-                'author': info.author,
-                'subject': info.subject,
-                'producer': info.producer,
-                'created_date': info.created.strftime('%Y-%m-%d %H:%M:%S UTC'),
-                'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
-                'number_of_pages': len(pdf_reader.pages)
-            }
+    def extract_pdf_metadata(self):
+    with open(self.file_path, 'rb') as pdf_file:
+        pdf_reader = PyPDF2.PdfReader(pdf_file)
+        info = pdf_reader.getDocumentInfo()
+        self.metadata['PDF_Metadata'] = {
+            'title': info.title,
+            'author': info.author,
+            'subject': info.subject,
+            'producer': info.producer,
+            'created_date': info.created.strftime('%Y-%m-%d %H:%M:%S UTC'),
+            'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
+            'number_of_pages': len(pdf_reader.pages)
+        }
+
 
     def extract_image_metadata(self, file_name):
         img = Image.open(file_name)
