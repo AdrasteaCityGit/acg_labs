@@ -13,7 +13,6 @@ from moviepy.editor import AudioFileClip
 import speech_recognition
 from textblob import TextBlob
 import openpyxl
-import python_pptx
 import python_docx
 import textract
 import nltk
