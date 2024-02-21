@@ -12,13 +12,16 @@ import pytesseract
 from moviepy.editor import AudioFileClip
 import speech_recognition
 from textblob import TextBlob
+import openpyxl
+import python_pptx
+import python_docx
+import textract
+import nltk
+import platform
 from pydub import AudioSegment
 import subprocess
-import platform
-from pptx import Presentation
 
 # Download nltk data for text analysis (you can further customize this based on your needs)
-import nltk
 nltk.download('punkt')
 
 class ArchiveMetadataExtractor:
@@ -38,7 +41,7 @@ class ArchiveMetadataExtractor:
             '.zip': self.extract_zip_metadata,
             '.tar': self.extract_tar_metadata,
             '.rar': self.extract_rar_metadata,
-            '.pdf': lambda selected_files, filter_types, extract_content, advanced_analysis: self.extract_pdf_metadata(self.file_path, selected_files, filter_types, extract_content, advanced_analysis),
+            '.pdf': self.extract_pdf_metadata,
             '.jpg': self.extract_image_metadata,
             '.png': self.extract_image_metadata,
             '.jpeg': self.extract_image_metadata,
@@ -105,19 +108,19 @@ class ArchiveMetadataExtractor:
         with rarfile.RarFile(self.file_path, 'r') as rar_file:
             self._extract_metadata_from_archive(rar_file, selected_files, filter_types, extract_content, advanced_analysis)
 
-    def extract_pdf_metadata(self, file_name, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-    with open(file_name, 'rb') as pdf_file:
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-        info = pdf_reader.getDocumentInfo()
-        self.metadata['PDF_Metadata'] = {
-            'title': info.title,
-            'author': info.author,
-            'subject': info.subject,
-            'producer': info.producer,
-            'created_date': info.created.strftime('%Y-%m-%d %H:%M:%S UTC'),
-            'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
-            'number_of_pages': len(pdf_reader.pages)
-        }
+    def extract_pdf_metadata(self, file_name):
+        with open(file_name, 'rb') as pdf_file:
+            pdf_reader = PyPDF2.PdfReader(pdf_file)
+            info = pdf_reader.getDocumentInfo()
+            self.metadata['PDF_Metadata'] = {
+                'title': info.title,
+                'author': info.author,
+                'subject': info.subject,
+                'producer': info.producer,
+                'created_date': info.created.strftime('%Y-%m-%d %H:%M:%S UTC'),
+                'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
+                'number_of_pages': len(pdf_reader.pages)
+            }
 
     def extract_image_metadata(self, file_name):
         img = Image.open(file_name)
@@ -150,7 +153,7 @@ class ArchiveMetadataExtractor:
         }
 
     def extract_audio_metadata(self, file_name):
-        audio = AudioSegment.from_file(file_name, format=file_extension[1:])  # Update this line
+        audio = AudioSegment.from_file(file_name)
         self.metadata['Audio_Metadata'] = {
             'channels': audio.channels,
             'frame_rate': audio.frame_rate,
