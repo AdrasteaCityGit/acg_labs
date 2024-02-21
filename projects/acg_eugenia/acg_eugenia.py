@@ -151,7 +151,7 @@ class ArchiveMetadataExtractor:
             self.extract_text_content(file_name)
 
     def extract_pdf_metadata(self, file_name):
-    with open(file_name, 'rb') as pdf_file
+    with open(file_name, 'rb') as pdf_file:
         pdf_reader = PyPDF2.PdfReader(pdf_file)
         info = pdf_reader.getDocumentInfo()
         self.metadata['PDF_Metadata'] = {
@@ -163,6 +163,7 @@ class ArchiveMetadataExtractor:
             'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
             'number_of_pages': len(pdf_reader.pages)
         }
+
 
     def extract_image_text_content(self, file_name):
         img = Image.open(file_name)
