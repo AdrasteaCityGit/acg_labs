@@ -1,258 +1,75 @@
-import os
-import zipfile
-import tarfile
-import rarfile
-from datetime import datetime
 import argparse
-import json
+import os
 from PIL import Image
-import concurrent.futures
-import pytesseract
-from moviepy.editor import AudioFileClip
-import speech_recognition
-from textblob import TextBlob
-import nltk
-import platform
-from pydub import AudioSegment
-import subprocess
+from PIL.ExifTags import TAGS
+import json
+import csv
+import pandas as pd
+import zipfile
 
-# Download nltk data for text analysis (you can further customize this based on your needs)
-nltk.download('punkt')
+def extract_metadata(image_path):
+    with Image.open(image_path) as img:
+        exif_data = img._getexif()
 
-class ArchiveMetadataExtractor:
-    SUPPORTED_EXTENSIONS = ['.zip', '.tar', '.rar', '.jpg', '.png', '.jpeg', '.txt', '.mp3', '.mp4']
-
-    def __init__(self, file_path):
-        self.file_path = file_path
-        self.metadata = {}
-
-    def extract_metadata(self, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-        _, file_extension = os.path.splitext(self.file_path)
-
-        if file_extension not in self.SUPPORTED_EXTENSIONS:
-            raise ValueError(f"Unsupported file format: {file_extension}")
-
-        extraction_methods = {
-            '.zip': self.extract_zip_metadata,
-            '.tar': self.extract_tar_metadata,
-            '.rar': self.extract_rar_metadata,
-            '.jpg': self.extract_image_metadata,
-            '.png': self.extract_image_metadata,
-            '.jpeg': self.extract_image_metadata,
-            '.txt': self.extract_text_metadata,
-            '.mp3': self.extract_audio_metadata,
-            '.mp4': self.extract_video_metadata,
-        }
-
-        extraction_methods[file_extension](selected_files, filter_types, extract_content, advanced_analysis)
-        self.identify_file_type()
-
-    def _extract_metadata_from_archive(self, archive, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = {executor.submit(self._extract_metadata, info, selected_files, filter_types, extract_content, advanced_analysis): info for info in archive.infolist()}
-            concurrent.futures.wait(futures)
-
-    def _extract_metadata(self, info, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-        if not selected_files or info.filename in selected_files:
-            file_type = self.identify_file_type(info.filename)
-            if filter_types and file_type not in filter_types:
-                return
-
-            if file_type not in self.metadata:
-                self.metadata[file_type] = {}
-
-            self.metadata[file_type][info.filename] = self.get_common_metadata(info)
-            if hasattr(info, 'compress_type'):
-                self.metadata[file_type][info.filename]['compression_type'] = info.compress_type
-
-            # Call specific extraction method based on file type
-            extraction_method = getattr(self, f'extract_{file_type.lower()}_metadata', None)
-            if extraction_method:
-                extraction_method(info.filename)
-
-            if extract_content:
-                self.extract_content(info.filename, file_type)
-
-                if advanced_analysis:
-                    self.perform_advanced_analysis(info.filename, file_type)
-
-    def create_clean_zip(self):
-        clean_zip_path = self.file_path.replace('.zip', '_clean.zip')
-        if platform.system() == 'Windows':
-            import shutil
-            shutil.make_archive(clean_zip_path[:-4], 'zip', self.file_path)
+        if exif_data is not None:
+            mapped_exif_data = {TAGS[key]: exif_data[key] for key in exif_data.keys() if key in TAGS and isinstance(exif_data[key], (str, int, bytes))}
+            return mapped_exif_data
         else:
-            os.system(f'ditto -c -k --sequesterRsrc --keepParent "{self.file_path}" "{clean_zip_path}"')
-        return clean_zip_path
+            return None
 
-    def extract_zip_metadata(self, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-        clean_zip_path = self.create_clean_zip()
-        with zipfile.ZipFile(clean_zip_path, 'r') as clean_zip:
-            self._extract_metadata_from_archive(clean_zip, selected_files, filter_types, extract_content, advanced_analysis)
-        os.remove(clean_zip_path)
+def save_metadata(metadata, output_file, output_format):
+    if output_format == "json":
+        with open(output_file, 'w') as json_file:
+            json.dump(metadata, json_file, indent=4)
+    elif output_format == "csv":
+        with open(output_file, 'w', newline='') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerow(["Tag", "Value"])
+            for key, value in metadata.items():
+                writer.writerow([key, value])
+    elif output_format == "excel":
+        df = pd.DataFrame(list(metadata.items()), columns=["Tag", "Value"])
+        df.to_excel(output_file, index=False)
+    else:
+        print(f"Unsupported output format: {output_format}")
 
-    def extract_tar_metadata(self, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-        with tarfile.open(self.file_path, 'r') as tar_file:
-            self._extract_metadata_from_archive(tar_file, selected_files, filter_types, extract_content, advanced_analysis)
+def process_image(image_path, output_folder, output_format, archive_name):
+    filename = os.path.basename(image_path)
+    metadata = extract_metadata(image_path)
 
-    def extract_rar_metadata(self, selected_files=None, filter_types=None, extract_content=False, advanced_analysis=False):
-        with rarfile.RarFile(self.file_path, 'r') as rar_file:
-            self._extract_metadata_from_archive(rar_file, selected_files, filter_types, extract_content, advanced_analysis)
+    if metadata:
+        output_file = os.path.join(output_folder, f"{archive_name}_metadata.{output_format}")
+        save_metadata(metadata, output_file, output_format)
+    else:
+        print(f"No metadata found for {filename}")
 
-    def extract_image_metadata(self, file_name):
-        img = Image.open(file_name)
-        self.metadata['Image_Metadata'] = {
-            'format': img.format,
-            'mode': img.mode,
-            'size': img.size,
-            'info': img.info
-        }
+def create_archive(output_folder, archive_name):
+    archive_path = os.path.join(output_folder, f"{archive_name}.zip")
 
-    def extract_text_metadata(self, file_name):
-        try:
-            # Using pdftotext command-line tool to extract text from PDF
-            text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
-            self.metadata['Text_Metadata'] = {
-                'content': text_content
-            }
-        except Exception as e:
-            print(f"Error extracting text content: {str(e)}")
+    with zipfile.ZipFile(archive_path, 'w') as zipf:
+        for root, dirs, files in os.walk(output_folder):
+            for file in files:
+                file_path = os.path.join(root, file)
+                zipf.write(file_path, os.path.relpath(file_path, output_folder))
 
-    def extract_audio_metadata(self, file_name):
-        audio = AudioSegment.from_file(file_name)
-        self.metadata['Audio_Metadata'] = {
-            'channels': audio.channels,
-            'frame_rate': audio.frame_rate,
-            'frame_width': audio.frame_width,
-            'frame_count': len(audio),
-            'duration_seconds': audio.duration_seconds
-        }
+    print(f"Archive created: {archive_path}")
 
-    def extract_video_metadata(self, file_name):
-        video = AudioFileClip(file_name)
-        self.metadata['Video_Metadata'] = {
-            'duration': video.duration,
-            'fps': video.fps,
-            'size': video.size
-        }
-
-    def extract_content(self, file_name, file_type):
-        # Perform content extraction based on file type
-        if file_type.lower() == 'image':
-            self.extract_image_text_content(file_name)
-        elif file_type.lower() == 'audio':
-            self.extract_audio_text_content(file_name)
-        elif file_type.lower() == 'text':
-            self.extract_text_content(file_name)
-
-    def extract_image_text_content(self, file_name):
-        img = Image.open(file_name)
-        text_content = pytesseract.image_to_string(img)
-        self.metadata['Image_Content'] = {
-            'text_content': text_content
-        }
-
-    def extract_audio_text_content(self, file_name):
-        recognizer = speech_recognition.Recognizer()
-        with speech_recognition.AudioFile(file_name) as audio_file:
-            audio_content = recognizer.record(audio_file)
-            text_content = recognizer.recognize_google(audio_content)
-            self.metadata['Audio_Content'] = {
-                'text_content': text_content
-            }
-
-    def perform_advanced_analysis(self, file_name, file_type):
-        if file_type.lower() in ['image', 'audio', 'text']:
-            content_key = f'{file_type.capitalize()}_Content'
-            if content_key in self.metadata:
-                text_content = self.metadata[content_key]['text_content']
-                analysis = self.analyze_text_sentiment(text_content)
-                self.metadata[content_key]['Advanced_Analysis'] = {
-                    'sentiment': analysis
-                }
-
-    def analyze_text_sentiment(self, text_content):
-        analysis = TextBlob(text_content)
-        return {
-            'polarity': analysis.sentiment.polarity,
-            'subjectivity': analysis.sentiment.subjectivity
-        }
-
-    @staticmethod
-    def get_common_metadata(info):
-        return {
-            'file_size': info.size,
-            'compression_type': None,
-            'last_modified': datetime.utcfromtimestamp(info.mtime).strftime('%Y-%m-%d %H:%M:%S UTC')
-        }
-
-    def identify_file_type(self, filename=None):
-        if not filename:
-            filename = self.file_path
-
-        _, file_extension = os.path.splitext(filename.lower())
-
-        if file_extension in ['.zip', '.tar', '.rar']:
-            return 'Archive'
-        elif file_extension in ['.jpg', '.png', '.jpeg']:
-            return 'Image'
-        elif file_extension in ['.txt']:
-            return 'Text'
-        elif file_extension in ['.mp3']:
-            return 'Audio'
-        elif file_extension in ['.mp4']:
-            return 'Video'
-        else:
-            return 'Unknown'
-
-def display_metadata_summary(metadata):
-    print("\nMetadata Summary:")
-    print("----------------------------")
-    for file_type, files in metadata.items():
-        for file_name, details in files.items():
-            print(f"{file_type.capitalize()} File: {file_name}")
-            print(f"Size: {details['file_size']} bytes")
-            print(f"Last Modified: {details['last_modified']}")
-            if details.get('compression_type') is not None:
-                print(f"Compression Type: {details['compression_type']}")
-            print("----------------------------")
-
-def save_metadata_to_json(metadata, output_file='metadata.json'):
-    with open(output_file, 'w') as json_file:
-        json.dump(metadata, json_file, indent=2)
-    print(f"Metadata saved to {output_file}.")
-
-def main():
-    parser = argparse.ArgumentParser(description='Extract metadata from various file formats.')
-    parser.add_argument('file_path', help='Path to the file or archive.')
-    parser.add_argument('--json', action='store_true', help='Display metadata in JSON format.')
-    parser.add_argument('--verbose', action='store_true', help='Display additional details.')
-    parser.add_argument('--save-json', metavar='output_file', help='Save metadata to a JSON file.')
-    parser.add_argument('--select-files', nargs='+', metavar='file_name',
-                        help='Select specific file(s) within an archive to extract metadata.')
-    parser.add_argument('--filter-types', nargs='+', metavar='file_type',
-                        help='Filter specific file type(s) for extraction.')
-    parser.add_argument('--extract-content', action='store_true', help='Extract content from supported files.')
-    parser.add_argument('--advanced-analysis', action='store_true', help='Perform advanced analysis on extracted content.')
-
-    args = parser.parse_args()
-    file_path = args.file_path
-
-    try:
-        metadata_extractor = ArchiveMetadataExtractor(file_path)
-        metadata_extractor.extract_metadata(args.select_files, args.filter_types, args.extract_content, args.advanced_analysis)
-
-        if metadata_extractor.metadata:
-            if args.verbose:
-                print(f"Successfully extracted metadata from {file_path}.")
-            display_metadata_summary(metadata_extractor.metadata)
-            if args.json:
-                print(json.dumps(metadata_extractor.metadata, indent=2))
-            if args.save_json:
-                save_metadata_to_json(metadata_extractor.metadata, args.save_json)
-
-    except Exception as e:
-        print(f"Error: {str(e)}")
+def parse_args():
+    parser = argparse.ArgumentParser(description="Process an image and extract metadata.")
+    parser.add_argument("image", type=str, help="Path to the input image.")
+    parser.add_argument("--output_folder", type=str, default=".", help="Path to the output folder for saving metadata files.")
+    parser.add_argument("--output_format", type=str, default="json", choices=["json", "csv", "excel"], help="Output format (json, csv, excel).")
+    return parser.parse_args()
 
 if __name__ == "__main__":
-    main()
+    args = parse_args()
+    image_path = args.image
+    output_folder = args.output_folder
+    output_format = args.output_format.lower()
+    archive_name = os.path.splitext(os.path.basename(image_path))[0]
+
+    if not os.path.exists(output_folder):
+        os.makedirs(output_folder)
+
+    process_image(image_path, output_folder, output_format, archive_name)
+    create_archive(output_folder, archive_name)
