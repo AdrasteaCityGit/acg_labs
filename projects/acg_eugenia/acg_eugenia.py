@@ -18,6 +18,7 @@ import platform
 from pptx import Presentation
 
 # Download nltk data for text analysis (you can further customize this based on your needs)
+import nltk
 nltk.download('punkt')
 
 class ArchiveMetadataExtractor:
