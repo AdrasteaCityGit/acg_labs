@@ -15,6 +15,7 @@ from textblob import TextBlob
 from pydub import AudioSegment
 import subprocess
 import platform
+from pptx import Presentation
 
 # Download nltk data for text analysis (you can further customize this based on your needs)
 nltk.download('punkt')
