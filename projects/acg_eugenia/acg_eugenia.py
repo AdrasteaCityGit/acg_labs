@@ -5,14 +5,12 @@ import rarfile
 from datetime import datetime
 import argparse
 import json
-import PyPDF2
 from PIL import Image
 import concurrent.futures
 import pytesseract
 from moviepy.editor import AudioFileClip
 import speech_recognition
 from textblob import TextBlob
-import textract
 import nltk
 import platform
 from pydub import AudioSegment
@@ -22,7 +20,7 @@ import subprocess
 nltk.download('punkt')
 
 class ArchiveMetadataExtractor:
-    SUPPORTED_EXTENSIONS = ['.zip', '.tar', '.rar', '.pdf', '.jpg', '.png', '.jpeg', '.txt', '.mp3', '.mp4']
+    SUPPORTED_EXTENSIONS = ['.zip', '.tar', '.rar', '.jpg', '.png', '.jpeg', '.txt', '.mp3', '.mp4']
 
     def __init__(self, file_path):
         self.file_path = file_path
@@ -38,7 +36,6 @@ class ArchiveMetadataExtractor:
             '.zip': self.extract_zip_metadata,
             '.tar': self.extract_tar_metadata,
             '.rar': self.extract_rar_metadata,
-            '.pdf': self.extract_pdf_metadata(info.filename),
             '.jpg': self.extract_image_metadata,
             '.png': self.extract_image_metadata,
             '.jpeg': self.extract_image_metadata,
@@ -141,29 +138,12 @@ class ArchiveMetadataExtractor:
 
     def extract_content(self, file_name, file_type):
         # Perform content extraction based on file type
-        if file_type.lower() == 'pdf':
-            self.extract_pdf_content(file_name)
-        elif file_type.lower() == 'image':
+        if file_type.lower() == 'image':
             self.extract_image_text_content(file_name)
         elif file_type.lower() == 'audio':
             self.extract_audio_text_content(file_name)
         elif file_type.lower() == 'text':
             self.extract_text_content(file_name)
-
-    def extract_pdf_metadata(self, file_name):
-    with open(file_name, 'rb') as pdf_file:
-        pdf_reader = PyPDF2.PdfReader(pdf_file)
-        info = pdf_reader.getDocumentInfo()
-        self.metadata['PDF_Metadata'] = {
-            'title': info.title,
-            'author': info.author,
-            'subject': info.subject,
-            'producer': info.producer,
-            'created_date': info.created.strftime('%Y-%m-%d %H:%M:%S UTC'),
-            'modified_date': info.modified.strftime('%Y-%m-%d %H:%M:%S UTC'),
-            'number_of_pages': len(pdf_reader.pages)
-        }
-
 
     def extract_image_text_content(self, file_name):
         img = Image.open(file_name)
@@ -182,7 +162,7 @@ class ArchiveMetadataExtractor:
             }
 
     def perform_advanced_analysis(self, file_name, file_type):
-        if file_type.lower() in ['pdf', 'image', 'audio', 'text']:
+        if file_type.lower() in ['image', 'audio', 'text']:
             content_key = f'{file_type.capitalize()}_Content'
             if content_key in self.metadata:
                 text_content = self.metadata[content_key]['text_content']
@@ -214,8 +194,6 @@ class ArchiveMetadataExtractor:
 
         if file_extension in ['.zip', '.tar', '.rar']:
             return 'Archive'
-        elif file_extension in ['.pdf']:
-            return 'PDF'
         elif file_extension in ['.jpg', '.png', '.jpeg']:
             return 'Image'
         elif file_extension in ['.txt']:
