@@ -12,21 +12,17 @@ import pytesseract
 from moviepy.editor import AudioFileClip
 import speech_recognition
 from textblob import TextBlob
-import openpyxl
-import python_docx
 import textract
 import nltk
 import platform
 from pydub import AudioSegment
 import subprocess
-from pptx import Presentation
 
 # Download nltk data for text analysis (you can further customize this based on your needs)
-import nltk
 nltk.download('punkt')
 
 class ArchiveMetadataExtractor:
-    SUPPORTED_EXTENSIONS = ['.zip', '.tar', '.rar', '.pdf', '.jpg', '.png', '.jpeg', '.docx', '.xlsx', '.pptx', '.mp3', '.mp4', '.txt']
+    SUPPORTED_EXTENSIONS = ['.zip', '.tar', '.rar', '.pdf', '.jpg', '.png', '.jpeg', '.txt', '.mp3', '.mp4']
 
     def __init__(self, file_path):
         self.file_path = file_path
@@ -46,12 +42,9 @@ class ArchiveMetadataExtractor:
             '.jpg': self.extract_image_metadata,
             '.png': self.extract_image_metadata,
             '.jpeg': self.extract_image_metadata,
-            '.docx': self.extract_docx_metadata,
-            '.xlsx': self.extract_xlsx_metadata,
-            '.pptx': self.extract_pptx_metadata,
+            '.txt': self.extract_text_metadata,
             '.mp3': self.extract_audio_metadata,
             '.mp4': self.extract_video_metadata,
-            '.txt': self.extract_text_metadata,
         }
 
         extraction_methods[file_extension](selected_files, filter_types, extract_content, advanced_analysis)
@@ -132,26 +125,15 @@ class ArchiveMetadataExtractor:
             'info': img.info
         }
 
-    def extract_docx_metadata(self, file_name):
-        doc = python_docx.Document(file_name)
-        paragraphs = [paragraph.text for paragraph in doc.paragraphs]
-        self.metadata['Docx_Metadata'] = {
-            'paragraphs': paragraphs
-        }
-
-    def extract_xlsx_metadata(self, file_name):
-        workbook = openpyxl.load_workbook(file_name)
-        sheets = workbook.sheetnames
-        self.metadata['Xlsx_Metadata'] = {
-            'sheets': sheets
-        }
-
-    def extract_pptx_metadata(self, file_name):
-        presentation = python_pptx.Presentation(file_name)
-        slides = [slide.text for slide in presentation.slides]
-        self.metadata['Pptx_Metadata'] = {
-            'slides': slides
-        }
+    def extract_text_metadata(self, file_name):
+        try:
+            # Using pdftotext command-line tool to extract text from PDF
+            text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
+            self.metadata['Text_Metadata'] = {
+                'content': text_content
+            }
+        except Exception as e:
+            print(f"Error extracting text content: {str(e)}")
 
     def extract_audio_metadata(self, file_name):
         audio = AudioSegment.from_file(file_name)
@@ -170,16 +152,6 @@ class ArchiveMetadataExtractor:
             'fps': video.fps,
             'size': video.size
         }
-
-    def extract_text_metadata(self, file_name):
-        try:
-            # Using pdftotext command-line tool to extract text from PDF
-            text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
-            self.metadata['Text_Metadata'] = {
-                'content': text_content
-            }
-        except Exception as e:
-            print(f"Error extracting text content: {str(e)}")
 
     def extract_content(self, file_name, file_type):
         # Perform content extraction based on file type
@@ -219,16 +191,6 @@ class ArchiveMetadataExtractor:
                 'text_content': text_content
             }
 
-    def extract_text_content(self, file_name):
-        try:
-            # Using pdftotext command-line tool to extract text from PDF
-            text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
-            self.metadata['Text_Content'] = {
-                'text_content': text_content
-            }
-        except Exception as e:
-            print(f"Error extracting text content: {str(e)}")
-
     def perform_advanced_analysis(self, file_name, file_type):
         if file_type.lower() in ['pdf', 'image', 'audio', 'text']:
             content_key = f'{file_type.capitalize()}_Content'
@@ -266,18 +228,12 @@ class ArchiveMetadataExtractor:
             return 'PDF'
         elif file_extension in ['.jpg', '.png', '.jpeg']:
             return 'Image'
-        elif file_extension in ['.docx']:
-            return 'Docx'
-        elif file_extension in ['.xlsx']:
-            return 'Xlsx'
-        elif file_extension in ['.pptx']:
-            return 'Pptx'
+        elif file_extension in ['.txt']:
+            return 'Text'
         elif file_extension in ['.mp3']:
             return 'Audio'
         elif file_extension in ['.mp4']:
             return 'Video'
-        elif file_extension in ['.txt']:
-            return 'Text'
         else:
             return 'Unknown'
 
