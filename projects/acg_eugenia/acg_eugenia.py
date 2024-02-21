@@ -19,6 +19,7 @@ import textract
 import nltk
 import platform
 from pydub import AudioSegment
+import subprocess
 
 # Download nltk data for text analysis (you can further customize this based on your needs)
 nltk.download('punkt')
@@ -170,10 +171,14 @@ class ArchiveMetadataExtractor:
         }
 
     def extract_text_metadata(self, file_name):
-        text_content = textract.process(file_name, method='pdftotext')
-        self.metadata['Text_Metadata'] = {
-            'content': text_content.decode('utf-8')
-        }
+        try:
+            # Use subprocess to call pdftotext
+            text_content = subprocess.check_output(['pdftotext', file_name, '-'], universal_newlines=True)
+            self.metadata['Text_Metadata'] = {
+                'content': text_content
+            }
+        except Exception as e:
+            print(f"Error extracting text content: {str(e)}")
 
     def extract_content(self, file_name, file_type):
         # Perform content extraction based on file type
@@ -212,12 +217,6 @@ class ArchiveMetadataExtractor:
             self.metadata['Audio_Content'] = {
                 'text_content': text_content
             }
-
-    def extract_text_content(self, file_name):
-        text_content = textract.process(file_name, method='pdftotext')
-        self.metadata['Text_Content'] = {
-            'text_content': text_content.decode('utf-8')
-        }
 
     def perform_advanced_analysis(self, file_name, file_type):
         if file_type.lower() in ['pdf', 'image', 'audio', 'text']:
