@@ -3,66 +3,64 @@ ACG_EUGENIA: Archive Metadata Extraction Tool
 
 ![alt text](https://www.adrasteagit.com/projects/acg_eugenia/acg_eugenia_logo.png)
 
-Overview:
-ACG_EUGENIA is a comprehensive command-line utility designed for extracting metadata and content from a diverse range
-of file formats. It provides in-depth information about files within an archive, supporting various functionalities
-such as metadata extraction, content extraction, trends analysis, graphical user interface (GUI), cloud integration,
-customizable output formats, and more.
+acg_eugenia - Comprehensive Image Metadata Extraction Tool
+Description
+acg_eugenia is a powerful and versatile tool designed for extracting comprehensive metadata from images. This tool supports various functionalities such as displaying detailed metadata information, extracting basic image details, camera information, GPS coordinates, and more. Additionally, it provides advanced features like image rotation, format conversion, thumbnail display, metadata editing, and datetime metadata formatting.
+Features
+1. Comprehensive Metadata Extraction:
+    * Extracts detailed metadata information from images.
+2. Basic Image Information:
+    * Displays basic image details such as dimensions, color mode, and file size.
+3. Camera Information:
+    * Extracts camera-related metadata, including make, model, exposure time, aperture, and ISO.
+4. GPS Coordinates:
+    * Extracts and displays GPS coordinates (latitude, longitude) with a clickable map link.
+5. Thumbnail Display:
+    * Option to display a thumbnail of the image.
+6. Image Rotation:
+    * Automatically rotates the image based on its orientation tag.
+7. Image Format Conversion:
+    * Converts the image to different formats (JPEG, PNG).
+8. Display Camera Thumbnail:
+    * Displays the thumbnail of the camera (if available in metadata).
+9. Metadata Editing:
+    * Allows users to edit and update specific metadata fields.
+10. Datetime Metadata Formatting:
+    * Formats datetime metadata fields for improved readability.
+How to Use
+1. Installation:
+    * Ensure that Python is installed on your system.
+    * Install the required libraries using the following command:
+    * pip install -r requeriments.txt
+    * pip install pillow exifread colorama
+    * 
+2. Usage:
+    * Run the tool with the following command:
+    * python acg_eugenia.py <image_path> [options]
+    * 
+3. Options:
+    * --tags: Filter and display specific metadata tags.
+    * --thumbnail: Display a thumbnail of the image.
+    * --convert_format: Convert image to specified format (JPEG, PNG).
+    * --edit_metadata: Edit metadata field with a new value.
+    * --format_datetime: Format datetime metadata.
+4. Examples:
+    * Display comprehensive metadata:
+    * python acg_eugenia.py image.jpg
+    * 
+    * Display thumbnail and convert the image to PNG:
+    * python acg_eugenia.py image.jpg --thumbnail --convert_format PNG
+    * 
+Libraries Used
+* Pillow: Python Imaging Library (PIL Fork) for working with images.
+* ExifRead: Library for reading Exif metadata from image files.
+* Colorama: Library for adding color to terminal text.
+OS Compatibility
+* The tool is compatible with Windows, macOS, and Linux operating systems.
+How it Works
+1. The tool extracts metadata using the ExifRead library.
+2. Basic image information, camera details, and GPS coordinates are extracted and displayed.
+3. Additional functionalities such as image rotation, format conversion, and thumbnail display are implemented.
+4. Users can edit specific metadata fields and format datetime metadata.
+5. The tool provides a comprehensive report on the image, including clickable map links for GPS coordinates.
 
-Functionalities:
-1. Metadata Extraction
-   - Extracts common metadata including file size, compression type, and last modification date.
-   - Supports a wide array of file formats: ZIP, TAR, RAR, PDF, JPG, PNG, JPEG, DOCX, XLSX, PPTX, MP3, MP4, and more.
-   - Tailors metadata extraction to each file type for detailed information.
-
-2. Content Extraction
-   - Extracts text content from supported file types (PDF, DOCX, PPTX, etc.).
-   - Performs advanced text analysis using spaCy.
-   - Generates word clouds for a visual representation of text content.
-
-3. Metadata Trends Analysis
-   - Analyzes metadata trends such as common file types and average file sizes.
-   - Provides statistical summaries for numerical metadata.
-
-4. Graphical User Interface (GUI)
-   - Offers a user-friendly GUI powered by tkinter for enhanced accessibility.
-
-5. Cloud Integration
-   - Allows users to upload extracted metadata to cloud storage services like AWS S3 or Google Cloud Storage.
-
-6. Customizable Output Formats
-   - Supports multiple output formats for metadata, including JSON, CSV, and Excel.
-
-7. Multithreading and Performance Optimization
-   - Optimizes performance with multithreading for concurrent file processing within an archive.
-
-8. Language Support
-   - Supports multiple languages for text analysis using spaCy or other language processing libraries.
-
-How to Use:
-- Prerequisites:
-  - Ensure Python (version 3.6 or higher) is installed.
-  - Install required dependencies: `pip install -r requirements.txt`
-
-- Command-Line Usage:
-  `python acg_eugenia.py <file_path> [options]`
-  Options:
-  --json: Display metadata in JSON format.
-  --verbose: Display additional details.
-  --save-json <output_file>: Save metadata to a JSON file.
-  --select-files <file_name>: Select specific files within an archive to extract metadata.
-  --filter-types <file_type>: Filter metadata extraction to specific file types.
-  --extract-content: Extract content (text, etc.) from supported file types.
-
-- GUI Usage:
-  Run the tool with the --gui option to launch the graphical user interface.
-  `python acg_eugenia.py --gui`
-
-Compatibility:
-ACG_EUGENIA is compatible with the following operating systems:
-- Windows
-- macOS (Mac)
-- Linux
-Ensure the required dependencies are installed for proper functionality on your operating system.
-
-"ACG_EUGENIA - Metadata Mastery Redefined, Explore the Unseen."

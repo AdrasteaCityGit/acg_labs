@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACG_EUGENIA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ACG_EUGENIA - Comprehensive Image Metadata Extraction Tool. Extract detailed metadata from images effortlessly.">
+    <meta name="keywords" content="ACG_EUGENIA, Image Metadata, Metadata Extraction, Image Analysis, Python, ExifRead, Pillow, Colorama">
+    <meta name="author" content="ACG_LABS">
+
+    <!-- SEO Enhancements -->
+    <title>ACG_EUGENIA - Image Metadata Extraction Tool</title>
+    <link rel="canonical" href="https://www.adrasteagit.com/acg_eugenia" />
+    <meta property="og:title" content="ACG_EUGENIA - Image Metadata Extraction Tool" />
+    <meta property="og:description" content="Extract detailed metadata from images effortlessly with ACG_EUGENIA.">
+    <meta property="og:image" content="https://www.adrasteagit.com/acg_eugenia_logo.png" />
+    <meta property="og:url" content="https://www.adrasteagit.com/acg_eugenia" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ACG_EUGENIA - Image Metadata Extraction Tool" />
+    <meta name="twitter:description" content="Extract detailed metadata from images effortlessly with ACG_EUGENIA." />
+    <meta name="twitter:image" content="https://www.adrasteagit.com/acg_eugenia_logo.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        header,
+        footer {
+            text-align: center;
+            background-color: #262626;
+            padding: 20px;
+            color: #00ffcc;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            background-color: #333;
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+
+        section:hover {
+            background-color: #444;
+        }
+
+        h1,
+        h2 {
+            color: #00ffcc;
+            margin-bottom: 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        ul,
+        ol {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        code {
+            background-color: #262626;
+            padding: 3px 5px;
+            border-radius: 3px;
+            color: #00ffcc;
+        }
+
+        a {
+            color: #007BFF;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .links-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .features-list {
+            margin: 0;
+            padding: 0;
+        }
+
+        .features-list li {
+            margin-bottom: 15px;
+        }
+
+        .how-to-use ol,
+        .libraries-used ul {
+            padding-left: 20px;
+        }
+
+        .how-to-use ol {
+            counter-reset: item;
+        }
+
+        .how-to-use li {
+            counter-increment: item;
+            margin-bottom: 10px;
+        }
+
+        .how-to-use li::before {
+            content: counter(item);
+            color: #007BFF;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .os-compatibility {
+            margin-top: 20px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .logo-container img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>ACG_EUGENIA - Comprehensive Image Metadata Extraction Tool</h1>
+        <p>Powerful and versatile tool for extracting detailed metadata from images</p>
+    </header>
+
+    <main>
+        <section>
+            <h2>Description</h2>
+            <p>
+                ACG_EUGENIA is a powerful and versatile tool designed for extracting comprehensive metadata from images.
+                This tool supports various functionalities such as displaying detailed metadata information,
+                extracting basic image details, camera information, GPS coordinates, and more.
+                Additionally, it provides advanced features like image rotation, format conversion, thumbnail display, metadata editing, and datetime metadata formatting.
+            </p>
+        </section>
+
+        <section>
+            <h2>Download</h2>
+            <div class="logo-container">
+                <img src="acg_eugenia_logo.png" alt="ACG Eugenia Logo">
+            </div>
+            <div class="links-container">
+                <a href="#"><strong>GITHUB</strong></a>
+                <a href="#"><strong>ZIP FILES</strong></a>
+            </div>
+        </section>
+
+        <section>
+            <h2>Features</h2>
+            <ul class="features-list">
+                <li><strong>Comprehensive Metadata Extraction:</strong> Extracts detailed metadata information from images.</li>
+                <li><strong>Basic Image Information:</strong> Displays basic image details such as dimensions, color mode, and file size.</li>
+                <li><strong>Camera Information:</strong> Extracts camera-related metadata, including make, model, exposure time, aperture, and ISO.</li>
+                <li><strong>GPS Coordinates:</strong> Extracts and displays GPS coordinates (latitude, longitude) with a clickable map link.</li>
+                <li><strong>Thumbnail Display:</strong> Option to display a thumbnail of the image.</li>
+                <li><strong>Image Rotation:</strong> Automatically rotates the image based on its orientation tag.</li>
+                <li><strong>Image Format Conversion:</strong> Converts the image to different formats (JPEG, PNG).</li>
+                <li><strong>Display Camera Thumbnail:</strong> Displays the thumbnail of the camera (if available in metadata).</li>
+                <li><strong>Metadata Editing:</strong> Allows users to edit and update specific metadata fields.</li>
+                <li><strong>Datetime Metadata Formatting:</strong> Formats datetime metadata fields for improved readability.</li>
+            </ul>
+        </section>
+
+        <section class="how-to-use">
+            <h2>How to Use</h2>
+            <ol>
+                <li>Install required libraries using the following command:<br><code>pip install -r requirements.txt</code></li>
+                <li>Run the tool with the following command:<br><code>python acg_eugenia.py &lt;image_path&gt; [options]</code></li>
+                <li>Options:
+                    <ul>
+                        <li><code>--tags:</code> Filter and display specific metadata tags.</li>
+                        <li><code>--thumbnail:</code> Display a thumbnail of the image.</li>
+                        <li><code>--convert_format:</code> Convert image to specified format (JPEG, PNG).</li>
+                        <li><code>--edit_metadata:</code> Edit metadata field with a new value.</li>
+                        <li><code>--format_datetime:</code> Format datetime metadata.</li>
+                    </ul>
+                </li>
+                <li>Examples:
+                    <ul>
+                        <li>Display comprehensive metadata:<br><code>python acg_eugenia.py image.jpg</code></li>
+                        <li>Display thumbnail and convert the image to PNG:<br><code>python acg_eugenia.py image.jpg --thumbnail --convert_format PNG</code></li>
+                    </ul>
+                </li>
+            </ol>
+        </section>
+
+        <section class="libraries-used">
+            <h2>Libraries Used</h2>
+            <ul>
+                <li><a href="https://pillow.readthedocs.io/" target="_blank">Pillow</a>: Python Imaging Library (PIL Fork) for working with images.</li>
+                <li><a href="https://pypi.org/project/ExifRead/" target="_blank">ExifRead</a>: Library for reading Exif metadata from image files.</li>
+                <li><a href="https://pypi.org/project/colorama/" target="_blank">Colorama</a>: Library for adding color to terminal text.</li>
+            </ul>
+        </section>
+
+        <section class="os-compatibility">
+            <h2>OS Compatibility</h2>
+            <p>The tool is compatible with Windows, macOS, and Linux operating systems.</p>
+        </section>
+
+        <section>
+            <h2>How it Works</h2>
+            <ol>
+                <li>The tool extracts metadata using the ExifRead library.</li>
+                <li>Basic image information, camera details, and GPS coordinates are extracted and displayed.</li>
+                <li>Additional functionalities such as image rotation, format conversion, and thumbnail display are implemented.</li>
+                <li>Users can edit specific metadata fields and format datetime metadata.</li>
+                <li>The tool provides a comprehensive report on the image, including clickable map links for GPS coordinates.</li>
+            </ol>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 ACG_EUGENIA Tool. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>
